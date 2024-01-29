@@ -1,0 +1,943 @@
+esphome:
+  name: alarm-v2
+  friendly_name: Alarm V2
+
+esp8266:
+  board: nodemcuv2
+
+# Enable logging
+logger:
+  level: DEBUG
+
+# Enable Home Assistant API
+api:
+  encryption:
+    key: "REDACTED"
+
+ota:
+  password: "REDACTED"
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Alarm-V2 Fallback Hotspot"
+    password: "REDACTED"
+
+captive_portal:
+
+# Define the output ports for the LED
+switch:
+  - platform: gpio
+    id: gpio_led
+    pin:
+      number: D8
+      mode: OUTPUT
+    restore_mode: ALWAYS_OFF
+  - platform: gpio
+    id: blue_led
+    pin:
+      number: D0
+      mode: OUTPUT
+      inverted: True
+    restore_mode: ALWAYS_OFF
+  - platform: gpio
+    id: other_blue_led
+    pin:
+      number: D4
+      mode: OUTPUT
+      inverted: True
+    restore_mode: ALWAYS_OFF
+
+i2c:
+  sda: D2
+  scl: D1
+  scan: False
+  frequency: 400kHz
+
+# mcp23017_hub0 is wired with A0, A1 and A2 to GND
+# mcp23017_hub1 is wried with A0 and A1 to GND and A2 to VCC
+mcp23017:
+  - id: 'mcp23017_hub0'
+    address: 0x20
+  - id: 'mcp23017_hub1'
+    address: 0x24
+
+# Strobe the LED near the USB connector for 1/2 second if WIFI is connected
+# Strobe the programming LED twice for 100ms with a 50ms gap if it is connected to HA API
+interval:
+  - interval: 5s
+    then:
+      - if:
+          condition:
+            wifi.connected:
+          then:
+            - switch.turn_on: blue_led
+            - delay: 500ms
+            - switch.turn_off: blue_led
+          else:
+            - switch.turn_off: blue_led
+  - interval: 5s
+    then:
+      - if:
+          condition:
+            api.connected:
+          then:
+            - switch.turn_on: other_blue_led
+            - delay: 100ms
+            - switch.turn_off: other_blue_led
+            - delay: 50ms
+            - switch.turn_on: other_blue_led
+            - delay: 100ms
+            - switch.turn_off: other_blue_led
+
+          else:
+            - switch.turn_off: other_blue_led
+  # - interval: 1s
+  #   then:
+  #     - lambda: |-
+  #         if (id(error_indicated) >= 0) {
+  #           ESP_LOGD("main", "Alarms Present: %d", id(error_indicated));
+  #         }
+
+globals:
+  - id: error_indicated
+    type: int
+    restore_value: no
+    initial_value: '0'
+
+binary_sensor:
+  - platform: gpio
+    name: b0_b0
+    pin:
+      mcp23xxx: mcp23017_hub0
+      number: 0
+      mode:
+        input: true
+        pullup: True
+      inverted: True
+    filters:
+      - delayed_on: 100ms
+      - delayed_off: 100ms
+    on_press:
+      then:
+        - lambda: |-
+            id(error_indicated) -= 1;
+            if (id(error_indicated) <= 0) {
+              id(gpio_led).turn_off();
+              id(error_indicated) = 0;
+            }
+    on_release:
+      then:
+        - switch.turn_on: gpio_led
+        - lambda: |-
+            id(error_indicated) += 1;
+
+  - platform: gpio
+    name: b0_b1
+    pin:
+      mcp23xxx: mcp23017_hub0
+      number: 1
+      mode:
+        input: true
+        pullup: True
+      inverted: True
+    filters:
+      - delayed_on: 100ms
+      - delayed_off: 100ms
+    on_press:
+      then:
+        - lambda: |-
+            id(error_indicated) -= 1;
+            if (id(error_indicated) <= 0) {
+              id(gpio_led).turn_off();
+              id(error_indicated) = 0;
+            }
+    on_release:
+      then:
+        - switch.turn_on: gpio_led
+        - lambda: |-
+            id(error_indicated) += 1;
+  
+  - platform: gpio
+    name: b0_b2
+    pin:
+      mcp23xxx: mcp23017_hub0
+      number: 2
+      mode:
+        input: true
+        pullup: True
+      inverted: True
+    filters:
+      - delayed_on: 100ms
+      - delayed_off: 100ms
+    on_press:
+      then:
+        - lambda: |-
+            id(error_indicated) -= 1;
+            if (id(error_indicated) <= 0) {
+              id(gpio_led).turn_off();
+              id(error_indicated) = 0;
+            }
+    on_release:
+      then:
+        - switch.turn_on: gpio_led
+        - lambda: |-
+            id(error_indicated) += 1;
+
+  - platform: gpio
+    name: b0_b3
+    pin:
+      mcp23xxx: mcp23017_hub0
+      number: 3
+      mode:
+        input: true
+        pullup: True
+      inverted: True
+    filters:
+      - delayed_on: 100ms
+      - delayed_off: 100ms
+    on_press:
+      then:
+        - lambda: |-
+            id(error_indicated) -= 1;
+            if (id(error_indicated) <= 0) {
+              id(gpio_led).turn_off();
+              id(error_indicated) = 0;
+            }
+    on_release:
+      then:
+        - switch.turn_on: gpio_led
+        - lambda: |-
+            id(error_indicated) += 1;
+
+  - platform: gpio
+    name: b0_b4
+    pin:
+      mcp23xxx: mcp23017_hub0
+      number: 4
+      mode:
+        input: true
+        pullup: True
+      inverted: True
+    filters:
+      - delayed_on: 100ms
+      - delayed_off: 100ms
+    on_press:
+      then:
+        - lambda: |-
+            id(error_indicated) -= 1;
+            if (id(error_indicated) <= 0) {
+              id(gpio_led).turn_off();
+              id(error_indicated) = 0;
+            }
+    on_release:
+      then:
+        - switch.turn_on: gpio_led
+        - lambda: |-
+            id(error_indicated) += 1;
+
+  - platform: gpio
+    name: b0_b5
+    pin:
+      mcp23xxx: mcp23017_hub0
+      number: 5
+      mode:
+        input: true
+        pullup: True
+      inverted: True
+    filters:
+      - delayed_on: 100ms
+      - delayed_off: 100ms
+    on_press:
+      then:
+        - lambda: |-
+            id(error_indicated) -= 1;
+            if (id(error_indicated) <= 0) {
+              id(gpio_led).turn_off();
+              id(error_indicated) = 0;
+            }
+    on_release:
+      then:
+        - switch.turn_on: gpio_led
+        - lambda: |-
+            id(error_indicated) += 1;
+
+  - platform: gpio
+    name: b0_b6
+    pin:
+      mcp23xxx: mcp23017_hub0
+      number: 6
+      mode:
+        input: true
+        pullup: True
+      inverted: True
+    filters:
+      - delayed_on: 100ms
+      - delayed_off: 100ms
+    on_press:
+      then:
+        - lambda: |-
+            id(error_indicated) -= 1;
+            if (id(error_indicated) <= 0) {
+              id(gpio_led).turn_off();
+              id(error_indicated) = 0;
+            }
+    on_release:
+      then:
+        - switch.turn_on: gpio_led
+        - lambda: |-
+            id(error_indicated) += 1;
+
+  - platform: gpio
+    name: b0_b7
+    pin:
+      mcp23xxx: mcp23017_hub0
+      number: 7
+      mode:
+        input: true
+        pullup: True
+      inverted: True
+    filters:
+      - delayed_on: 100ms
+      - delayed_off: 100ms
+    on_press:
+      then:
+        - lambda: |-
+            id(error_indicated) -= 1;
+            if (id(error_indicated) <= 0) {
+              id(gpio_led).turn_off();
+              id(error_indicated) = 0;
+            }
+    on_release:
+      then:
+        - switch.turn_on: gpio_led
+        - lambda: |-
+            id(error_indicated) += 1;
+
+  # - platform: gpio
+  #   name: b0_a0
+  #   pin:
+  #     mcp23xxx: mcp23017_hub0
+  #     number: 8
+  #     mode:
+  #       input: true
+  #       pullup: True
+  #     inverted: True
+  #   filters:
+  #     - delayed_on: 100ms
+  #     - delayed_off: 100ms
+  #   on_press:
+  #     then:
+  #       - lambda: |-
+  #           id(error_indicated) -= 1;
+  #           if (id(error_indicated) <= 0) {
+  #             id(gpio_led).turn_off();
+  #             id(error_indicated) = 0;
+  #           }
+  #   on_release:
+  #     then:
+  #       - switch.turn_on: gpio_led
+  #       - lambda: |-
+  #           id(error_indicated) += 1;
+
+  # - platform: gpio
+  #   name: b0_a1
+  #   pin:
+  #     mcp23xxx: mcp23017_hub0
+  #     number: 9
+  #     mode:
+  #       input: true
+  #       pullup: True
+  #     inverted: True
+  #   filters:
+  #     - delayed_on: 100ms
+  #     - delayed_off: 100ms
+  #   on_press:
+  #     then:
+  #       - lambda: |-
+  #           id(error_indicated) -= 1;
+  #           if (id(error_indicated) <= 0) {
+  #             id(gpio_led).turn_off();
+  #             id(error_indicated) = 0;
+  #           }
+  #   on_release:
+  #     then:
+  #       - switch.turn_on: gpio_led
+  #       - lambda: |-
+  #           id(error_indicated) += 1;
+
+  # - platform: gpio
+  #   name: b0_a2
+  #   pin:
+  #     mcp23xxx: mcp23017_hub0
+  #     number: 10
+  #     mode:
+  #       input: true
+  #       pullup: True
+  #     inverted: True
+  #   filters:
+  #     - delayed_on: 100ms
+  #     - delayed_off: 100ms
+  #   on_press:
+  #     then:
+  #       - lambda: |-
+  #           id(error_indicated) -= 1;
+  #           if (id(error_indicated) <= 0) {
+  #             id(gpio_led).turn_off();
+  #             id(error_indicated) = 0;
+  #           }
+  #   on_release:
+  #     then:
+  #       - switch.turn_on: gpio_led
+  #       - lambda: |-
+  #           id(error_indicated) += 1;
+
+  # - platform: gpio
+  #   name: b0_a3
+  #   pin:
+  #     mcp23xxx: mcp23017_hub0
+  #     number: 11
+  #     mode:
+  #       input: true
+  #       pullup: True
+  #     inverted: True
+  #   filters:
+  #     - delayed_on: 100ms
+  #     - delayed_off: 100ms
+  #   on_press:
+  #     then:
+  #       - lambda: |-
+  #           id(error_indicated) -= 1;
+  #           if (id(error_indicated) <= 0) {
+  #             id(gpio_led).turn_off();
+  #             id(error_indicated) = 0;
+  #           }
+  #   on_release:
+  #     then:
+  #       - switch.turn_on: gpio_led
+  #       - lambda: |-
+  #           id(error_indicated) += 1;
+
+  # - platform: gpio
+  #   name: b0_a4
+  #   pin:
+  #     mcp23xxx: mcp23017_hub0
+  #     number: 12
+  #     mode:
+  #       input: true
+  #       pullup: True
+  #     inverted: True
+  #   filters:
+  #     - delayed_on: 100ms
+  #     - delayed_off: 100ms
+  #   on_press:
+  #     then:
+  #       - lambda: |-
+  #           id(error_indicated) -= 1;
+  #           if (id(error_indicated) <= 0) {
+  #             id(gpio_led).turn_off();
+  #             id(error_indicated) = 0;
+  #           }
+  #   on_release:
+  #     then:
+  #       - switch.turn_on: gpio_led
+  #       - lambda: |-
+  #           id(error_indicated) += 1;
+
+  # - platform: gpio
+  #   name: b0_a5
+  #   pin:
+  #     mcp23xxx: mcp23017_hub0
+  #     number: 13
+  #     mode:
+  #       input: true
+  #       pullup: True
+  #     inverted: True
+  #   filters:
+  #     - delayed_on: 100ms
+  #     - delayed_off: 100ms
+  #   on_press:
+  #     then:
+  #       - lambda: |-
+  #           id(error_indicated) -= 1;
+  #           if (id(error_indicated) <= 0) {
+  #             id(gpio_led).turn_off();
+  #             id(error_indicated) = 0;
+  #           }
+  #   on_release:
+  #     then:
+  #       - switch.turn_on: gpio_led
+  #       - lambda: |-
+  #           id(error_indicated) += 1;
+
+  # - platform: gpio
+  #   name: b0_a6
+  #   pin:
+  #     mcp23xxx: mcp23017_hub0
+  #     number: 14
+  #     mode:
+  #       input: true
+  #       pullup: True
+  #     inverted: True
+  #   filters:
+  #     - delayed_on: 100ms
+  #     - delayed_off: 100ms
+  #   on_press:
+  #     then:
+  #       - lambda: |-
+  #           id(error_indicated) -= 1;
+  #           if (id(error_indicated) <= 0) {
+  #             id(gpio_led).turn_off();
+  #             id(error_indicated) = 0;
+  #           }
+  #   on_release:
+  #     then:
+  #       - switch.turn_on: gpio_led
+  #       - lambda: |-
+  #           id(error_indicated) += 1;
+
+  # - platform: gpio
+  #   name: b0_a7
+  #   pin:
+  #     mcp23xxx: mcp23017_hub0
+  #     number: 15
+  #     mode:
+  #       input: true
+  #       pullup: True
+  #     inverted: True
+  #   filters:
+  #     - delayed_on: 100ms
+  #     - delayed_off: 100ms
+  #   on_press:
+  #     then:
+  #       - lambda: |-
+  #           id(error_indicated) -= 1;
+  #           if (id(error_indicated) <= 0) {
+  #             id(gpio_led).turn_off();
+  #             id(error_indicated) = 0;
+  #           }
+  #   on_release:
+  #     then:
+  #       - switch.turn_on: gpio_led
+  #       - lambda: |-
+  #           id(error_indicated) += 1;
+
+  # - platform: gpio
+  #   name: b1_b0
+  #   pin:
+  #     mcp23xxx: mcp23017_hub1
+  #     number: 0
+  #     mode:
+  #       input: true
+  #       pullup: True
+  #     inverted: True
+  #   filters:
+  #     - delayed_on: 100ms
+  #     - delayed_off: 100ms
+  #   on_press:
+  #     then:
+  #       - lambda: |-
+  #           id(error_indicated) -= 1;
+  #           if (id(error_indicated) <= 0) {
+  #             id(gpio_led).turn_off();
+  #             id(error_indicated) = 0;
+  #           }
+  #   on_release:
+  #     then:
+  #       - switch.turn_on: gpio_led
+  #       - lambda: |-
+  #           id(error_indicated) += 1;
+
+  # - platform: gpio
+  #   name: b1_b1
+  #   pin:
+  #     mcp23xxx: mcp23017_hub1
+  #     number: 1
+  #     mode:
+  #       input: true
+  #       pullup: True
+  #     inverted: True
+  #   filters:
+  #     - delayed_on: 100ms
+  #     - delayed_off: 100ms
+  #   on_press:
+  #     then:
+  #       - lambda: |-
+  #           id(error_indicated) -= 1;
+  #           if (id(error_indicated) <= 0) {
+  #             id(gpio_led).turn_off();
+  #             id(error_indicated) = 0;
+  #           }
+  #   on_release:
+  #     then:
+  #       - switch.turn_on: gpio_led
+  #       - lambda: |-
+  #           id(error_indicated) += 1;
+  
+  # - platform: gpio
+  #   name: b1_b2
+  #   pin:
+  #     mcp23xxx: mcp23017_hub1
+  #     number: 2
+  #     mode:
+  #       input: true
+  #       pullup: True
+  #     inverted: True
+  #   filters:
+  #     - delayed_on: 100ms
+  #     - delayed_off: 100ms
+  #   on_press:
+  #     then:
+  #       - lambda: |-
+  #           id(error_indicated) -= 1;
+  #           if (id(error_indicated) <= 0) {
+  #             id(gpio_led).turn_off();
+  #             id(error_indicated) = 0;
+  #           }
+  #   on_release:
+  #     then:
+  #       - switch.turn_on: gpio_led
+  #       - lambda: |-
+  #           id(error_indicated) += 1;
+
+  # - platform: gpio
+  #   name: b1_b3
+  #   pin:
+  #     mcp23xxx: mcp23017_hub1
+  #     number: 3
+  #     mode:
+  #       input: true
+  #       pullup: True
+  #     inverted: True
+  #   filters:
+  #     - delayed_on: 100ms
+  #     - delayed_off: 100ms
+  #   on_press:
+  #     then:
+  #       - lambda: |-
+  #           id(error_indicated) -= 1;
+  #           if (id(error_indicated) <= 0) {
+  #             id(gpio_led).turn_off();
+  #             id(error_indicated) = 0;
+  #           }
+  #   on_release:
+  #     then:
+  #       - switch.turn_on: gpio_led
+  #       - lambda: |-
+  #           id(error_indicated) += 1;
+
+  # - platform: gpio
+  #   name: b1_b4
+  #   pin:
+  #     mcp23xxx: mcp23017_hub1
+  #     number: 4
+  #     mode:
+  #       input: true
+  #       pullup: True
+  #     inverted: True
+  #   filters:
+  #     - delayed_on: 100ms
+  #     - delayed_off: 100ms
+  #   on_press:
+  #     then:
+  #       - lambda: |-
+  #           id(error_indicated) -= 1;
+  #           if (id(error_indicated) <= 0) {
+  #             id(gpio_led).turn_off();
+  #             id(error_indicated) = 0;
+  #           }
+  #   on_release:
+  #     then:
+  #       - switch.turn_on: gpio_led
+  #       - lambda: |-
+  #           id(error_indicated) += 1;
+
+  # - platform: gpio
+  #   name: b1_b5
+  #   pin:
+  #     mcp23xxx: mcp23017_hub1
+  #     number: 5
+  #     mode:
+  #       input: true
+  #       pullup: True
+  #     inverted: True
+  #   filters:
+  #     - delayed_on: 100ms
+  #     - delayed_off: 100ms
+  #   on_press:
+  #     then:
+  #       - lambda: |-
+  #           id(error_indicated) -= 1;
+  #           if (id(error_indicated) <= 0) {
+  #             id(gpio_led).turn_off();
+  #             id(error_indicated) = 0;
+  #           }
+  #   on_release:
+  #     then:
+  #       - switch.turn_on: gpio_led
+  #       - lambda: |-
+  #           id(error_indicated) += 1;
+
+  # - platform: gpio
+  #   name: b1_b6
+  #   pin:
+  #     mcp23xxx: mcp23017_hub1
+  #     number: 6
+  #     mode:
+  #       input: true
+  #       pullup: True
+  #     inverted: True
+  #   filters:
+  #     - delayed_on: 100ms
+  #     - delayed_off: 100ms
+  #   on_press:
+  #     then:
+  #       - lambda: |-
+  #           id(error_indicated) -= 1;
+  #           if (id(error_indicated) <= 0) {
+  #             id(gpio_led).turn_off();
+  #             id(error_indicated) = 0;
+  #           }
+  #   on_release:
+  #     then:
+  #       - switch.turn_on: gpio_led
+  #       - lambda: |-
+  #           id(error_indicated) += 1;
+
+  # - platform: gpio
+  #   name: b1_b7
+  #   pin:
+  #     mcp23xxx: mcp23017_hub1
+  #     number: 7
+  #     mode:
+  #       input: true
+  #       pullup: True
+  #     inverted: True
+  #   filters:
+  #     - delayed_on: 100ms
+  #     - delayed_off: 100ms
+  #   on_press:
+  #     then:
+  #       - lambda: |-
+  #           id(error_indicated) -= 1;
+  #           if (id(error_indicated) <= 0) {
+  #             id(gpio_led).turn_off();
+  #             id(error_indicated) = 0;
+  #           }
+  #   on_release:
+  #     then:
+  #       - switch.turn_on: gpio_led
+  #       - lambda: |-
+  #           id(error_indicated) += 1;
+
+  # - platform: gpio
+  #   name: b1_a0
+  #   pin:
+  #     mcp23xxx: mcp23017_hub1
+  #     number: 8
+  #     mode:
+  #       input: true
+  #       pullup: True
+  #     inverted: True
+  #   filters:
+  #     - delayed_on: 100ms
+  #     - delayed_off: 100ms
+  #   on_press:
+  #     then:
+  #       - lambda: |-
+  #           id(error_indicated) -= 1;
+  #           if (id(error_indicated) <= 0) {
+  #             id(gpio_led).turn_off();
+  #             id(error_indicated) = 0;
+  #           }
+  #   on_release:
+  #     then:
+  #       - switch.turn_on: gpio_led
+  #       - lambda: |-
+  #           id(error_indicated) += 1;
+
+  # - platform: gpio
+  #   name: b1_a1
+  #   pin:
+  #     mcp23xxx: mcp23017_hub1
+  #     number: 9
+  #     mode:
+  #       input: true
+  #       pullup: True
+  #     inverted: True
+  #   filters:
+  #     - delayed_on: 100ms
+  #     - delayed_off: 100ms
+  #   on_press:
+  #     then:
+  #       - lambda: |-
+  #           id(error_indicated) -= 1;
+  #           if (id(error_indicated) <= 0) {
+  #             id(gpio_led).turn_off();
+  #             id(error_indicated) = 0;
+  #           }
+  #   on_release:
+  #     then:
+  #       - switch.turn_on: gpio_led
+  #       - lambda: |-
+  #           id(error_indicated) += 1;
+
+  # - platform: gpio
+  #   name: b1_a2
+  #   pin:
+  #     mcp23xxx: mcp23017_hub1
+  #     number: 10
+  #     mode:
+  #       input: true
+  #       pullup: True
+  #     inverted: True
+  #   filters:
+  #     - delayed_on: 100ms
+  #     - delayed_off: 100ms
+  #   on_press:
+  #     then:
+  #       - lambda: |-
+  #           id(error_indicated) -= 1;
+  #           if (id(error_indicated) <= 0) {
+  #             id(gpio_led).turn_off();
+  #             id(error_indicated) = 0;
+  #           }
+  #   on_release:
+  #     then:
+  #       - switch.turn_on: gpio_led
+  #       - lambda: |-
+  #           id(error_indicated) += 1;
+
+  # - platform: gpio
+  #   name: b1_a3
+  #   pin:
+  #     mcp23xxx: mcp23017_hub1
+  #     number: 11
+  #     mode:
+  #       input: true
+  #       pullup: True
+  #     inverted: True
+  #   filters:
+  #     - delayed_on: 100ms
+  #     - delayed_off: 100ms
+  #   on_press:
+  #     then:
+  #       - lambda: |-
+  #           id(error_indicated) -= 1;
+  #           if (id(error_indicated) <= 0) {
+  #             id(gpio_led).turn_off();
+  #             id(error_indicated) = 0;
+  #           }
+  #   on_release:
+  #     then:
+  #       - switch.turn_on: gpio_led
+  #       - lambda: |-
+  #           id(error_indicated) += 1;
+
+  # - platform: gpio
+  #   name: b1_a4
+  #   pin:
+  #     mcp23xxx: mcp23017_hub1
+  #     number: 12
+  #     mode:
+  #       input: true
+  #       pullup: True
+  #     inverted: True
+  #   filters:
+  #     - delayed_on: 100ms
+  #     - delayed_off: 100ms
+  #   on_press:
+  #     then:
+  #       - lambda: |-
+  #           id(error_indicated) -= 1;
+  #           if (id(error_indicated) <= 0) {
+  #             id(gpio_led).turn_off();
+  #             id(error_indicated) = 0;
+  #           }
+  #   on_release:
+  #     then:
+  #       - switch.turn_on: gpio_led
+  #       - lambda: |-
+  #           id(error_indicated) += 1;
+
+  # - platform: gpio
+  #   name: b1_a5
+  #   pin:
+  #     mcp23xxx: mcp23017_hub1
+  #     number: 13
+  #     mode:
+  #       input: true
+  #       pullup: True
+  #     inverted: True
+  #   filters:
+  #     - delayed_on: 100ms
+  #     - delayed_off: 100ms
+  #   on_press:
+  #     then:
+  #       - lambda: |-
+  #           id(error_indicated) -= 1;
+  #           if (id(error_indicated) <= 0) {
+  #             id(gpio_led).turn_off();
+  #             id(error_indicated) = 0;
+  #           }
+  #   on_release:
+  #     then:
+  #       - switch.turn_on: gpio_led
+  #       - lambda: |-
+  #           id(error_indicated) += 1;
+
+  # - platform: gpio
+  #   name: b1_a6
+  #   pin:
+  #     mcp23xxx: mcp23017_hub1
+  #     number: 14
+  #     mode:
+  #       input: true
+  #       pullup: True
+  #     inverted: True
+  #   filters:
+  #     - delayed_on: 100ms
+  #     - delayed_off: 100ms
+  #   on_press:
+  #     then:
+  #       - lambda: |-
+  #           id(error_indicated) -= 1;
+  #           if (id(error_indicated) <= 0) {
+  #             id(gpio_led).turn_off();
+  #             id(error_indicated) = 0;
+  #           }
+  #   on_release:
+  #     then:
+  #       - switch.turn_on: gpio_led
+  #       - lambda: |-
+  #           id(error_indicated) += 1;
+
+  # - platform: gpio
+  #   name: b1_a7
+  #   pin:
+  #     mcp23xxx: mcp23017_hub1
+  #     number: 15
+  #     mode:
+  #       input: true
+  #       pullup: True
+  #     inverted: True
+  #   filters:
+  #     - delayed_on: 100ms
+  #     - delayed_off: 100ms
+  #   on_press:
+  #     then:
+  #       - lambda: |-
+  #           id(error_indicated) -= 1;
+  #           if (id(error_indicated) <= 0) {
+  #             id(gpio_led).turn_off();
+  #             id(error_indicated) = 0;
+  #           }
+  #   on_release:
+  #     then:
+  #       - switch.turn_on: gpio_led
+  #       - lambda: |-
+  #           id(error_indicated) += 1;
+
