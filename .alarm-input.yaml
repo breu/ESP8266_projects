@@ -1,0 +1,22 @@
+binary_sensor:
+  - platform: gpio
+    name: ${gpio_id}
+    id: ${gpio_id}
+    publish_initial_state: True
+    pin:
+      mcp23xxx: ${gpio_hub}
+      number: ${gpio_pin}
+      mode:
+        input: true
+        pullup: True
+      inverted: True
+    filters:
+      - delayed_on: 100ms
+      - delayed_off: 100ms
+    on_press:
+      then:
+        - script.execute: dec_acc
+    on_release:
+      then:
+        - script.execute: add_acc
+        - switch.turn_on: gpio_led
