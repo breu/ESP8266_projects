@@ -38,23 +38,23 @@ logger:
 # Enable Home Assistant API
 api:
   encryption:
-    key:
+    key: "[REDACTED]"
 
 ota:
-  password:
+  password: "[RECACTED]"
 
 wifi:
   ssid: !secret wifi_ssid
   password: !secret wifi_password
   manual_ip:
-    static_ip:
-    gateway:
-    subnet:
+    static_ip: 192.168.8.12
+    gateway: 192.168.8.1
+    subnet: 255.255.254.0
 
   # Enable fallback hotspot (captive portal) in case wifi connection fails
   ap:
     ssid: "Alarm-V2 Fallback Hotspot"
-    password:
+    password: "[REDACTED]"
 
 captive_portal:
 
@@ -155,69 +155,69 @@ script:
     then:
       - lambda: |-
           id(accumulated_errors) = 0;
-          if(!id(b0_b0).state) id(accumulated_errors) += 1;
-          if(!id(b0_b1).state) id(accumulated_errors) += 1;
-          if(!id(b0_b2).state) id(accumulated_errors) += 1;
-          if(!id(b0_b3).state) id(accumulated_errors) += 1;
-          if(!id(b0_b4).state) id(accumulated_errors) += 1;
-          if(!id(b0_b5).state) id(accumulated_errors) += 1;
-          if(!id(b0_b6).state) id(accumulated_errors) += 1;
-          if(!id(b0_b7).state) id(accumulated_errors) += 1;
-          if(!id(b0_b8).state) id(accumulated_errors) += 1;
-          if(!id(b0_b9).state) id(accumulated_errors) += 1;
-          if(!id(b0_b10).state) id(accumulated_errors) += 1;
-          if(!id(b0_b11).state) id(accumulated_errors) += 1;
-          if(!id(b0_b12).state) id(accumulated_errors) += 1;
-          if(!id(b0_b13).state) id(accumulated_errors) += 1;
-          if(!id(b0_b14).state) id(accumulated_errors) += 1;
-          if(!id(b0_b15).state) id(accumulated_errors) += 1;
-          if(!id(b1_b0).state) id(accumulated_errors) += 1;
-          if(!id(b1_b1).state) id(accumulated_errors) += 1;
-          if(!id(b1_b2).state) id(accumulated_errors) += 1;
-          if(!id(b1_b3).state) id(accumulated_errors) += 1;
-          if(!id(b1_b4).state) id(accumulated_errors) += 1;
-          if(!id(b1_b5).state) id(accumulated_errors) += 1;
-          if(!id(b1_b6).state) id(accumulated_errors) += 1;
-          if(!id(b1_b7).state) id(accumulated_errors) += 1;
-          if(!id(b1_b8).state) id(accumulated_errors) += 1;
-          if(!id(b1_b9).state) id(accumulated_errors) += 1;
-          if(!id(b1_b10).state) id(accumulated_errors) += 1;
-          if(!id(b1_b11).state) id(accumulated_errors) += 1;
-          if(!id(b1_b12).state) id(accumulated_errors) += 1;
-          if(!id(b1_b13).state) id(accumulated_errors) += 1;
-          if(!id(b1_b14).state) id(accumulated_errors) += 1;
-          if(!id(b1_b15).state) id(accumulated_errors) += 1;
+          if(!id(J1_1).state) id(accumulated_errors) += 1;
+          if(!id(J1_2).state) id(accumulated_errors) += 1;
+          if(!id(J1_3).state) id(accumulated_errors) += 1;
+          if(!id(J1_4).state) id(accumulated_errors) += 1;
+          if(!id(J1_5).state) id(accumulated_errors) += 1;
+          if(!id(J1_6).state) id(accumulated_errors) += 1;
+          if(!id(J1_7).state) id(accumulated_errors) += 1;
+          if(!id(J1_8).state) id(accumulated_errors) += 1;
+          if(!id(J1_9).state) id(accumulated_errors) += 1;
+          if(!id(J1_10).state) id(accumulated_errors) += 1;
+          if(!id(J1_11).state) id(accumulated_errors) += 1;
+          if(!id(J1_12).state) id(accumulated_errors) += 1;
+          if(!id(J1_13).state) id(accumulated_errors) += 1;
+          if(!id(J1_14).state) id(accumulated_errors) += 1;
+          if(!id(J1_15).state) id(accumulated_errors) += 1;
+          if(!id(J1_16).state) id(accumulated_errors) += 1;
+          if(!id(J3_1).state) id(accumulated_errors) += 1;
+          if(!id(J3_2).state) id(accumulated_errors) += 1;
+          if(!id(J3_3).state) id(accumulated_errors) += 1;
+          if(!id(J3_4).state) id(accumulated_errors) += 1;
+          if(!id(J3_5).state) id(accumulated_errors) += 1;
+          if(!id(J3_6).state) id(accumulated_errors) += 1;
+          if(!id(J3_7).state) id(accumulated_errors) += 1;
+          if(!id(J3_8).state) id(accumulated_errors) += 1;
+          if(!id(J3_9).state) id(accumulated_errors) += 1;
+          if(!id(J3_10).state) id(accumulated_errors) += 1;
+          if(!id(J3_11).state) id(accumulated_errors) += 1;
+          if(!id(J3_12).state) id(accumulated_errors) += 1;
+          if(!id(J3_13).state) id(accumulated_errors) += 1;
+          if(!id(J3_14).state) id(accumulated_errors) += 1;
+          if(!id(J3_15).state) id(accumulated_errors) += 1;
+          if(!id(J3_16).state) id(accumulated_errors) += 1;
 
 packages:
-  input1: !include { file: .alarm-input.yaml, vars: { gpio_id: 'b0_b0' , gpio_pin: 0 , gpio_hub: 'mcp23017_hub0'} }
-  input2: !include { file: .alarm-input.yaml, vars: { gpio_id: 'b0_b1' , gpio_pin: 1 , gpio_hub: 'mcp23017_hub0'} }
-  input3: !include { file: .alarm-input.yaml, vars: { gpio_id: 'b0_b2' , gpio_pin: 2 , gpio_hub: 'mcp23017_hub0'} }
-  input4: !include { file: .alarm-input.yaml, vars: { gpio_id: 'b0_b3' , gpio_pin: 3 , gpio_hub: 'mcp23017_hub0'} }
-  input5: !include { file: .alarm-input.yaml, vars: { gpio_id: 'b0_b4' , gpio_pin: 4 , gpio_hub: 'mcp23017_hub0'} }
-  input6: !include { file: .alarm-input.yaml, vars: { gpio_id: 'b0_b5' , gpio_pin: 5 , gpio_hub: 'mcp23017_hub0'} }
-  input7: !include { file: .alarm-input.yaml, vars: { gpio_id: 'b0_b6' , gpio_pin: 6 , gpio_hub: 'mcp23017_hub0'} }
-  input8: !include { file: .alarm-input.yaml, vars: { gpio_id: 'b0_b7' , gpio_pin: 7 , gpio_hub: 'mcp23017_hub0'} }
-  input9: !include { file: .alarm-input.yaml, vars: { gpio_id: 'b0_b8' , gpio_pin: 8 , gpio_hub: 'mcp23017_hub0'} }
-  input10: !include { file: .alarm-input.yaml, vars: { gpio_id: 'b0_b9' , gpio_pin: 9 , gpio_hub: 'mcp23017_hub0'} }
-  input11: !include { file: .alarm-input.yaml, vars: { gpio_id: 'b0_b10' , gpio_pin: 10 , gpio_hub: 'mcp23017_hub0'} }
-  input12: !include { file: .alarm-input.yaml, vars: { gpio_id: 'b0_b11' , gpio_pin: 11 , gpio_hub: 'mcp23017_hub0'} }
-  input13: !include { file: .alarm-input.yaml, vars: { gpio_id: 'b0_b12' , gpio_pin: 12 , gpio_hub: 'mcp23017_hub0'} }
-  input14: !include { file: .alarm-input.yaml, vars: { gpio_id: 'b0_b13' , gpio_pin: 13 , gpio_hub: 'mcp23017_hub0'} }
-  input15: !include { file: .alarm-input.yaml, vars: { gpio_id: 'b0_b14' , gpio_pin: 14 , gpio_hub: 'mcp23017_hub0'} }
-  input16: !include { file: .alarm-input.yaml, vars: { gpio_id: 'b0_b15' , gpio_pin: 15 , gpio_hub: 'mcp23017_hub0'} }
-  input17: !include { file: .alarm-input.yaml, vars: { gpio_id: 'b1_b0' , gpio_pin: 0 , gpio_hub: 'mcp23017_hub1'} }
-  input18: !include { file: .alarm-input.yaml, vars: { gpio_id: 'b1_b1' , gpio_pin: 1 , gpio_hub: 'mcp23017_hub1'} }
-  input19: !include { file: .alarm-input.yaml, vars: { gpio_id: 'b1_b2' , gpio_pin: 2 , gpio_hub: 'mcp23017_hub1'} }
-  input20: !include { file: .alarm-input.yaml, vars: { gpio_id: 'b1_b3' , gpio_pin: 3 , gpio_hub: 'mcp23017_hub1'} }
-  input21: !include { file: .alarm-input.yaml, vars: { gpio_id: 'b1_b4' , gpio_pin: 4 , gpio_hub: 'mcp23017_hub1'} }
-  input22: !include { file: .alarm-input.yaml, vars: { gpio_id: 'b1_b5' , gpio_pin: 5 , gpio_hub: 'mcp23017_hub1'} }
-  input23: !include { file: .alarm-input.yaml, vars: { gpio_id: 'b1_b6' , gpio_pin: 6 , gpio_hub: 'mcp23017_hub1'} }
-  input24: !include { file: .alarm-input.yaml, vars: { gpio_id: 'b1_b7' , gpio_pin: 7 , gpio_hub: 'mcp23017_hub1'} }
-  input25: !include { file: .alarm-input.yaml, vars: { gpio_id: 'b1_b8' , gpio_pin: 8 , gpio_hub: 'mcp23017_hub1'} }
-  input26: !include { file: .alarm-input.yaml, vars: { gpio_id: 'b1_b9' , gpio_pin: 9 , gpio_hub: 'mcp23017_hub1'} }
-  input27: !include { file: .alarm-input.yaml, vars: { gpio_id: 'b1_b10' , gpio_pin: 10 , gpio_hub: 'mcp23017_hub1'} }
-  input28: !include { file: .alarm-input.yaml, vars: { gpio_id: 'b1_b11' , gpio_pin: 11 , gpio_hub: 'mcp23017_hub1'} }
-  input29: !include { file: .alarm-input.yaml, vars: { gpio_id: 'b1_b12' , gpio_pin: 12 , gpio_hub: 'mcp23017_hub1'} }
-  input30: !include { file: .alarm-input.yaml, vars: { gpio_id: 'b1_b13' , gpio_pin: 13 , gpio_hub: 'mcp23017_hub1'} }
-  input31: !include { file: .alarm-input.yaml, vars: { gpio_id: 'b1_b14' , gpio_pin: 14 , gpio_hub: 'mcp23017_hub1'} }
-  input32: !include { file: .alarm-input.yaml, vars: { gpio_id: 'b1_b15' , gpio_pin: 15 , gpio_hub: 'mcp23017_hub1'} }
+  input1: !include { file: .alarm-input.yaml, vars: { gpio_id: 'J1_8' , gpio_pin: 0 , gpio_hub: 'mcp23017_hub0'} }
+  input2: !include { file: .alarm-input.yaml, vars: { gpio_id: 'J1_7' , gpio_pin: 1 , gpio_hub: 'mcp23017_hub0'} }
+  input3: !include { file: .alarm-input.yaml, vars: { gpio_id: 'J1_6' , gpio_pin: 2 , gpio_hub: 'mcp23017_hub0'} }
+  input4: !include { file: .alarm-input.yaml, vars: { gpio_id: 'J1_5' , gpio_pin: 3 , gpio_hub: 'mcp23017_hub0'} }
+  input5: !include { file: .alarm-input.yaml, vars: { gpio_id: 'J1_4' , gpio_pin: 4 , gpio_hub: 'mcp23017_hub0'} }
+  input6: !include { file: .alarm-input.yaml, vars: { gpio_id: 'J1_3' , gpio_pin: 5 , gpio_hub: 'mcp23017_hub0'} }
+  input7: !include { file: .alarm-input.yaml, vars: { gpio_id: 'J1_2' , gpio_pin: 6 , gpio_hub: 'mcp23017_hub0'} }
+  input8: !include { file: .alarm-input.yaml, vars: { gpio_id: 'J1_1' , gpio_pin: 7 , gpio_hub: 'mcp23017_hub0'} }
+  input9: !include { file: .alarm-input.yaml, vars: { gpio_id: 'J1_9' , gpio_pin: 8 , gpio_hub: 'mcp23017_hub0'} }
+  input10: !include { file: .alarm-input.yaml, vars: { gpio_id: 'J1_10' , gpio_pin: 9 , gpio_hub: 'mcp23017_hub0'} }
+  input11: !include { file: .alarm-input.yaml, vars: { gpio_id: 'J1_11' , gpio_pin: 10 , gpio_hub: 'mcp23017_hub0'} }
+  input12: !include { file: .alarm-input.yaml, vars: { gpio_id: 'J1_12' , gpio_pin: 11 , gpio_hub: 'mcp23017_hub0'} }
+  input13: !include { file: .alarm-input.yaml, vars: { gpio_id: 'J1_13' , gpio_pin: 12 , gpio_hub: 'mcp23017_hub0'} }
+  input14: !include { file: .alarm-input.yaml, vars: { gpio_id: 'J1_14' , gpio_pin: 13 , gpio_hub: 'mcp23017_hub0'} }
+  input15: !include { file: .alarm-input.yaml, vars: { gpio_id: 'J1_15' , gpio_pin: 14 , gpio_hub: 'mcp23017_hub0'} }
+  input16: !include { file: .alarm-input.yaml, vars: { gpio_id: 'J1_16' , gpio_pin: 15 , gpio_hub: 'mcp23017_hub0'} }
+  input17: !include { file: .alarm-input.yaml, vars: { gpio_id: 'J3_8' , gpio_pin: 0 , gpio_hub: 'mcp23017_hub1'} }
+  input18: !include { file: .alarm-input.yaml, vars: { gpio_id: 'J3_7' , gpio_pin: 1 , gpio_hub: 'mcp23017_hub1'} }
+  input19: !include { file: .alarm-input.yaml, vars: { gpio_id: 'J3_6' , gpio_pin: 2 , gpio_hub: 'mcp23017_hub1'} }
+  input20: !include { file: .alarm-input.yaml, vars: { gpio_id: 'J3_5' , gpio_pin: 3 , gpio_hub: 'mcp23017_hub1'} }
+  input21: !include { file: .alarm-input.yaml, vars: { gpio_id: 'J3_4' , gpio_pin: 4 , gpio_hub: 'mcp23017_hub1'} }
+  input22: !include { file: .alarm-input.yaml, vars: { gpio_id: 'J3_3' , gpio_pin: 5 , gpio_hub: 'mcp23017_hub1'} }
+  input23: !include { file: .alarm-input.yaml, vars: { gpio_id: 'J3_2' , gpio_pin: 6 , gpio_hub: 'mcp23017_hub1'} }
+  input24: !include { file: .alarm-input.yaml, vars: { gpio_id: 'J3_1' , gpio_pin: 7 , gpio_hub: 'mcp23017_hub1'} }
+  input25: !include { file: .alarm-input.yaml, vars: { gpio_id: 'J3_9' , gpio_pin: 8 , gpio_hub: 'mcp23017_hub1'} }
+  input26: !include { file: .alarm-input.yaml, vars: { gpio_id: 'J3_10' , gpio_pin: 9 , gpio_hub: 'mcp23017_hub1'} }
+  input27: !include { file: .alarm-input.yaml, vars: { gpio_id: 'J3_11' , gpio_pin: 10 , gpio_hub: 'mcp23017_hub1'} }
+  input28: !include { file: .alarm-input.yaml, vars: { gpio_id: 'J3_12' , gpio_pin: 11 , gpio_hub: 'mcp23017_hub1'} }
+  input29: !include { file: .alarm-input.yaml, vars: { gpio_id: 'J3_13' , gpio_pin: 12 , gpio_hub: 'mcp23017_hub1'} }
+  input30: !include { file: .alarm-input.yaml, vars: { gpio_id: 'J3_14' , gpio_pin: 13 , gpio_hub: 'mcp23017_hub1'} }
+  input31: !include { file: .alarm-input.yaml, vars: { gpio_id: 'J3_15' , gpio_pin: 14 , gpio_hub: 'mcp23017_hub1'} }
+  input32: !include { file: .alarm-input.yaml, vars: { gpio_id: 'J3_16' , gpio_pin: 15 , gpio_hub: 'mcp23017_hub1'} }
